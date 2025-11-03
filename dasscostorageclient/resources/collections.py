@@ -1,6 +1,6 @@
 from typing import List
 
-from ..core.models import Collection
+from ..core.data import Collection
 from ..core.utils import json_to_model
 from ..utils import *
 

@@ -1,6 +1,6 @@
 from typing import List
 
-from ..core.models import Pipeline
+from ..core.data import Pipeline
 from ..core.utils import json_to_model
 from ..utils import *
 

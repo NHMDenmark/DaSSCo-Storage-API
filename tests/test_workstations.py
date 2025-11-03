@@ -1,5 +1,5 @@
 from dasscostorageclient.core.enums import WorkstationStatus
-from dasscostorageclient.core.models import Workstation
+from dasscostorageclient.core.data import Workstation
 from .dassco_test_client import mockClient, base_url
 
 API_URL = f"{base_url}/ars/api"

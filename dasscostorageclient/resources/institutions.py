@@ -1,53 +1,51 @@
-from ..core.models import Institution
-from ..core.utils import json_to_model
-from ..utils import *
 from typing import List
 
+from dasscostorageclient.core.models import Institution, RoleRestriction
+from dasscostorageclient.resources.base import BaseResource
+from dasscostorageclient.utils import json_to_model
 
-class Institutions:
+class InstitutionResource(BaseResource):
 
-    def __init__(self, access_token):
-        self.access_token = access_token
+   def __init__(self, client):
+       super().__init__(client, "/v1/institutions")
 
-    def list(self):
-        """
-        Gets a list of all institutions
+   def list(self) -> List[Institution]:
+       """
+       Gets a list of all institutions.
+       :return: A list of institutions.
+       """
+       return json_to_model(List[Institution], self._get().json())
 
-        Returns:
-            A list of institutions
-        """
-        res = send_request(RequestMethod.GET, self.access_token, "/v1/institutions")
-        return json_to_model(List[Institution], res.json())
+   def get(self, name: str) -> Institution:
+       """
+       Gets the institution with the given name.
+       :param name: The name of the institution to be retrieved.
+       :return: The retrieved institution.
+       """
+       return json_to_model(Institution, self._get(f"/{name}").json())
 
-    def get(self, name: str):
-        """
-        Gets the institution with the given name
+   def create(self, name: str, role_restrictions: List[RoleRestriction] = None) -> Institution:
+       """
+       Creates a new institution with the given name.
+       :param name: The name of the institution to be created.
+       :param role_restrictions: The roles needed to access assets within the institution.
+       :return: The newly created institution.
+       """
+       if role_restrictions is None:
+           role_restrictions = []
 
-        Args:
-            name (str): The name of the institution to be retrieved
+       body = {"name": name, "roleRestrictions": role_restrictions}
+       return json_to_model(Institution, self._post(body=body).json())
 
-        Returns:
-             The retrieved institution
-        """
-        res = send_request(RequestMethod.GET, self.access_token, f"/v1/institutions/{name}")
+   def update(self, name: str, role_restrictions: List[RoleRestriction]) -> Institution:
+       """
+       Update the role restrictions on the given institution.
+       :param name: The name of the institution to be updated.
+       :param role_restrictions: The roles needed to access assets within the institution.
+       :return: The updated institution.
+       """
+       if role_restrictions is None:
+           role_restrictions = []
 
-        if res.status_code == 204:
-            raise Exception(f"The institution {name} does not exist")
-
-        return json_to_model(Institution, res.json())
-
-    def create(self, name: str):
-        """
-          Creates an institution with the given name
-
-          Args:
-              name (str): The name of the institution to be created
-
-          Returns:
-              The created institution
-        """
-        body = {
-            'name': name,
-        }
-        res = send_request(RequestMethod.POST, self.access_token, "/v1/institutions", body)
-        return json_to_model(Institution, res.json())
+       body = {"name": name, "roleRestrictions": role_restrictions}
+       return json_to_model(Institution, self._put(f"/{name}", body).json())

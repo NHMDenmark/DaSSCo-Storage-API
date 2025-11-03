@@ -1,7 +1,7 @@
 from typing import List
 
 from ..core.enums import WorkstationStatus
-from ..core.models import Workstation
+from ..core.data import Workstation
 from ..core.utils import json_to_model
 from ..utils import *
 

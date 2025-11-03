@@ -1,4 +1,4 @@
-from dasscostorageclient.core.models import Pipeline
+from dasscostorageclient.core.data import Pipeline
 from .dassco_test_client import mockClient, base_url
 
 API_URL = f"{base_url}/ars/api"

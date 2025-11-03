@@ -1,4 +1,4 @@
-from dasscostorageclient.core.models import Institution
+from dasscostorageclient.core.data import Institution
 from .dassco_test_client import mockClient, base_url
 
 API_URL = f"{base_url}/ars/api"
