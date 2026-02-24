@@ -14,7 +14,6 @@ body = {
     "asset_pid": '1234',
     "asset_guid": asset_guid,
     "funding": ["some funding"],
-    "asset_subject": "folder",
     "institution": "test-suite-institution",
     "pipeline": "test-suite-pipeline",
     "collection": "test-suite-collection",
@@ -25,6 +24,7 @@ body = {
 
 try:
     asset = client.assets.create(body, 10)
+    print(asset.http_info)
 except APIError as e:
     print(e)
     # Asset might already exist

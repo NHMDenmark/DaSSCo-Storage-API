@@ -1,5 +1,6 @@
 import zlib
 import os
+from pathlib import Path
 from typing import List
 from pydantic import TypeAdapter
 from .base import BaseResource
@@ -10,14 +11,21 @@ class FileProxyResource(BaseResource):
     def __init__(self, client):
         super().__init__(client, "", True)
 
-    def upload(self, file_path, institution: str, collection: str, asset_guid: str, file_size_mb: int) -> None:
-        file = open(file_path, 'rb')
-        file_data = file.read()
-        file.close()
-        # Calculate checksum
+    def _upload_common(self, file_path: str, upload_path: str, file_size_mb: int):
+        file_data = Path(file_path).read_bytes()
         crc = zlib.crc32(file_data)
         filename = os.path.basename(file_path)
-        self._put(f"/assetfiles/{institution}/{collection}/{asset_guid}/{filename}?crc={crc}&file_size_mb={file_size_mb}", data=file_data)
+        self._put(
+            f"{upload_path}{filename}?crc={crc}&file_size_mb={file_size_mb}",
+            data=file_data
+        )
+
+    def upload(self, file_path: str, institution: str, collection: str, asset_guid: str, file_size_mb: int) -> None:
+        upload_path = f"/assetfiles/{institution}/{collection}/{asset_guid}/"
+        self._upload_common(file_path, upload_path, file_size_mb)
+
+    def upload_path(self, file_path: str, path: str, file_size_mb: int):
+        self._upload_common(file_path, path, file_size_mb)
 
     def delete_all(self, institution: str, collection: str, asset_guid: str) -> None:
         self._delete(f"/assetfiles/{institution}/{collection}/{asset_guid}")

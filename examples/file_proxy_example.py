@@ -1,5 +1,6 @@
 import os
 from dasscostorageclient import DaSSCoStorageClient
+from dasscostorageclient.exceptions import APIError
 
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
@@ -9,10 +10,33 @@ client = DaSSCoStorageClient(client_id, client_secret)
 filename = "file.tif"
 institution = "test-suite-institution"
 collection = "test-suite-collection"
-guid = "test_asset2"
+guid = "test_asset24"
+
+body = {
+    "asset_pid": '1234',
+    "asset_guid": guid,
+    "funding": ["some funding"],
+    "institution": institution,
+    "pipeline": "test-suite-pipeline",
+    "collection": collection,
+    "workstation": "test-suite-workstation",
+    "status": "WORKING_COPY",
+    "digitiser": "John Doe",
+}
+
+# Create a new asset
+asset = None
+try:
+    asset = client.assets.create(body, 10)
+    print(asset.http_info)
+except APIError as e:
+    print(e)
+    # Asset might already exist
+    pass
 
 # Upload file
-client.files.upload(filename, institution, collection, guid, 10)
+client.files.upload_path(file_path=filename, path=asset.http_info.path, file_size_mb=10)
+# Alternatively: client.files.upload(filename, institution, collection, guid, 10)
 
 # List of files for a given asset with an open share
 lst = client.files.list(institution, collection, guid)

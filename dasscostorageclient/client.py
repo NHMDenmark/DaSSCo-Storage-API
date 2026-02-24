@@ -5,6 +5,7 @@ from dasscostorageclient.exceptions import APIError
 from dasscostorageclient.resources.assets import AssetResource
 from dasscostorageclient.resources.fileproxy import FileProxyResource
 from dasscostorageclient.resources.institutions import InstitutionResource
+from dasscostorageclient.resources.specimens import SpecimenResource
 
 class DaSSCoStorageClient:
 
@@ -22,6 +23,7 @@ class DaSSCoStorageClient:
         self.institutions = InstitutionResource(self)
         self.assets = AssetResource(self)
         self.files = FileProxyResource(self)
+        self.specimens = SpecimenResource(self)
 
     def request(self, method: str, path: str, json: dict = None, data = None, use_file_proxy: bool = False) -> requests.Response:
         base_url = self.file_proxy_url if use_file_proxy else self.ars_url

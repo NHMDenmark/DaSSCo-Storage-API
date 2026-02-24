@@ -1,6 +1,25 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import List
+from typing import List, Optional, Dict
+
+class Specimen(BaseModel):
+    institution: str | None
+    collection: str | None
+    barcode: str | None
+    specimen_pid: str | None
+    preparation_types: list[str]
+    specimen_id: int | None
+    role_restrictions: Optional[list[Dict[str, str]]] = []
+
+class AssetSpecimen(BaseModel):
+    specimen_id: int | None
+    asset_guid: str | None
+    specimen_pid: str | None
+    asset_specimen_id: int | None
+    asset_preparation_type: str | None
+    specify_collection_object_attachment_id: int | None
+    asset_detached: bool
+    specimen: Specimen | None
 
 class ExternalPublisher(BaseModel):
     name: str
@@ -29,16 +48,24 @@ class Legality(BaseModel):
     license: str | None
     credit: str | None
 
-class Specimen(BaseModel):
+class SpecimenModel(BaseModel):
     institution: str | None
     collection: str | None
-    barcode: str
-    pid: str = Field(alias='specimen_pid')
+    barcode: str | None
+    specimen_pid: str | None
     preparation_types: list[str]
-    asset_preparation_type: str | None
     specimen_id: int | None
+    role_restrictions: Optional[list[Dict[str, str]]] = []
+
+class AssetSpecimenModel(BaseModel):
+    specimen_id: int | None
+    asset_guid: str | None
+    specimen_pid: str | None
+    asset_specimen_id: int | None
+    asset_preparation_type: str | None
     specify_collection_object_attachment_id: int | None
     asset_detached: bool
+    specimen: SpecimenModel | None
 
 class Asset(BaseModel):
     asset_locked: bool
@@ -65,13 +92,13 @@ class Asset(BaseModel):
     multi_specimen: bool
     parent_guids: list[str]
     payload_type: str | None
-    pid: str | None = Field(alias='asset_pid')
+    asset_pid: str
     pipeline: str
     push_to_specify: bool
     restricted_access: list[str]
     specify_attachment_remarks: str | None
     specify_attachment_title: str | None
-    specimens: list[Specimen]
+    asset_specimen: list[AssetSpecimen]
     status: str
     tags: dict | None
 
