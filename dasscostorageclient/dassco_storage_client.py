@@ -7,7 +7,7 @@ from .resources.collections import Collections
 from .resources.fileproxy import FileProxy
 from .resources.specimens import Specimens
 from .exceptions.api_error import APIError
-from .constants import DASSCO_BASE_URL, DASSCO_TOKEN_PATH
+from .constants import DASSCO_TOKEN_PATH
 
 import os
 import sys
@@ -20,7 +20,7 @@ class DaSSCoStorageClient:
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.token_endpoint = f"{DASSCO_BASE_URL}{DASSCO_TOKEN_PATH}"
+        self.token_endpoint = DASSCO_TOKEN_PATH
         self.access_token = self.__get_access_token()
         self.institutions = Institutions(self.access_token)
         self.assets = Assets(self.access_token)

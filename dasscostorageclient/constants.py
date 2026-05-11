@@ -4,5 +4,5 @@ import os
 load_dotenv()
 
 DASSCO_BASE_URL = os.getenv("DASSCO_BASE_URL") or "https://biovault.dassco.dk"
-DASSCO_TOKEN_PATH = os.getenv("DASSCO_TOKEN_PATH") or "/keycloak/realms/dassco/protocol/openid-connect/token"
+DASSCO_TOKEN_PATH = os.getenv("DASSCO_TOKEN_PATH") or f"{DASSCO_BASE_URL}/keycloak/realms/dassco/protocol/openid-connect/token"
 
