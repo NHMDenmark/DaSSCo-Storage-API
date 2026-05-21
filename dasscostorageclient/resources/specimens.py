@@ -7,12 +7,14 @@ class Specimens:
     def __init__(self, access_token):
         self.access_token = access_token
 
-    def create_or_update(self, specimenPID: str, body: dict):
+    def create_or_update(self, institution: str, collection: str, catalogueNumber: str, body: dict):
         """
         Creates or updates the given specimen in ARS
 
         Args:
-            specimenPID (str): The specimenPID of the specimen to be created/updated
+            institution (str): The institution of the specimen to be created/updated
+            collection (str): The collection of the specimen to be created/updated
+            catalogueNumber (str): The catalogue number/barcode of the specimen to be created/updated
             body (dict): The specimen to be created/updated in the given specimen
 
         Returns:
@@ -21,7 +23,7 @@ class Specimens:
         res = send_request(
             RequestMethod.PUT,
             self.access_token,
-            f"/v1/specimens/{specimenPID}",
+            f"/v1/institutions/{institution}/collections/{collection}/specimen/{catalogueNumber}",
             body)
         
         return {
@@ -29,13 +31,15 @@ class Specimens:
             'status_code': res.status_code
         }
     
-    def get_specimen(self, specimenPID):
+    def get_specimen(self, institution: str, collection: str, catalogueNumber: str):
 
         """
         Gets the given specimen in ARS
 
         Args:
-            specimenPID (str): The specimenPID of the specimen to be found
+            institution (str): The institution of the specimen to be found
+            collection (str): The collection of the specimen to be found
+            catalogueNumber (str): The catalogue number/barcode of the specimen to be found
 
         Returns:
             The specimen object that contains the data of the specimen
@@ -43,7 +47,7 @@ class Specimens:
         res = send_request(
             RequestMethod.GET,
             self.access_token,
-            f"/v1/specimens/{specimenPID}"
+            f"/v1/institutions/{institution}/collections/{collection}/specimen/{catalogueNumber}"
             )
         
         return {
@@ -51,14 +55,15 @@ class Specimens:
             'status_code': res.status_code
         }
 
-    def delete_specimen(self, specimenPID):
+    def delete_specimen(self, institution: str, collection: str, catalogueNumber: str):
 
         """
         Deletes the given specimen in ARS
 
         Args:
-            specimenPID (str): The specimenPID of the specimen to be deleted
-            
+            institution (str): The institution of the specimen to be deleted
+            collection (str): The collection of the specimen to be deleted
+            catalogueNumber (str): The catalogue number/barcode of the specimen to be deleted
 
         Returns:
             The response object that contains the status and message of the delete operation
@@ -66,7 +71,7 @@ class Specimens:
         res = send_request(
             RequestMethod.DELETE,
             self.access_token,
-            f"/v1/specimens/{specimenPID}"
+            f"/v1/institutions/{institution}/collections/{collection}/specimen/{catalogueNumber}"
             )
         
         return {
