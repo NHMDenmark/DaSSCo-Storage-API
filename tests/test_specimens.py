@@ -23,39 +23,42 @@ def setup_and_teardown():
 def test_can_create_specimen():
 
     specimen_model = SpecimenModel()
-    specimen_pid = specimen_model.specimen_pid 
-    specimen = specimen_model.specimen 
+    institution = specimen_model.specimen["institution"]
+    collection = specimen_model.specimen["collection"]
+    catalogueNumber = specimen_model.specimen["barcode"]
+    specimen = specimen_model.specimen
     
-    res = client.specimens.create_or_update(specimen_pid, specimen) 
+    res = client.specimens.create_or_update(institution, collection, catalogueNumber, specimen) 
     
     status_code = res.get('status_code') 
     specimen = res.get('data') 
     
     assert status_code == 200 
-    assert specimen.specimen_pid == specimen_pid 
+    assert specimen.barcode == specimen_model.specimen["barcode"] 
     
 @pytest.mark.order(2) 
 def test_can_get_specimen(): 
     
     specimen_model = SpecimenModel()
-    specimen_pid = specimen_model.specimen_pid 
     specimen = specimen_model.specimen 
     
-    res = client.specimens.get_specimen(specimen_pid) 
+    res = client.specimens.get_specimen(institution=specimen["institution"], collection=specimen["collection"], catalogueNumber=specimen["barcode"]) 
     
     status_code = res.get('status_code') 
     specimen = res.get('data') 
     
     assert status_code == 200 
-    assert specimen.specimen_pid == specimen_pid 
+    assert specimen.barcode == specimen_model.specimen["barcode"] 
 
 @pytest.mark.order(3) 
 def test_can_delete_specimen():
     
     specimen_model = SpecimenModel()
-    specimen_pid = specimen_model.specimen_pid 
-     
-    res = client.specimens.delete_specimen(specimen_pid) 
+    institution = specimen_model.specimen["institution"]
+    collection = specimen_model.specimen["collection"]
+    catalogueNumber = specimen_model.specimen["barcode"]
+
+    res = client.specimens.delete_specimen(institution, collection, catalogueNumber)
     status_code = res.get('status_code') 
     print(res.get("data"))
     assert status_code == 200
