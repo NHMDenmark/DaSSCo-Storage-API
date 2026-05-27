@@ -45,7 +45,7 @@ class DaSSCoStorageClient:
         }
 
         res = requests.post(self.token_endpoint, data=data)
-
+        
         if res.status_code == 200:
             token_data = res.json()
             return token_data.get("access_token")

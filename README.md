@@ -15,6 +15,9 @@ python -m pip install dasscostorageclient
 ### Getting started
 
 ```
+
+Recommended to set env variables before usage. See env.example 
+
 from dasscostorageclient import DaSSCoStorageClient
 
 client_id = 'CLIENT_ID'
@@ -25,3 +28,11 @@ client = DaSSCoStorageClient(client_id, client_secret)
 institutions = client.institutions.get()
 
 ```
+### For testing/development.
+
+```
+Create .env as per env.example.
+example.py can be run after .env has been created.
+
+To run tests: 
+pytest -s file.py

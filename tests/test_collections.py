@@ -16,7 +16,7 @@ def test_can_list_collections(requests_mock):
                       json=[{'name': 'test-collection', 'institution': institution_name}])
     institutions = mockClient.collections.list(institution_name)
     assert institutions == [Collection(name="test-collection", institution=institution_name)]
-
+    
 
 def test_can_create_collection(requests_mock):
     institution_name = "test-institution"
@@ -25,4 +25,4 @@ def test_can_create_collection(requests_mock):
                        json={'name': collection_name, 'institution': institution_name})
     collection = mockClient.collections.create(institution_name, collection_name)
     assert collection.name == collection_name
-    assert collection.institution == institution_name
+    assert collection.institution == institution_name    

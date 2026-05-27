@@ -60,5 +60,5 @@ def test_can_delete_specimen():
 
     res = client.specimens.delete_specimen(institution, collection, catalogueNumber)
     status_code = res.get('status_code') 
-    print(res.get("data"))
+    
     assert status_code == 200
